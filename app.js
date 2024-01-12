@@ -12,13 +12,13 @@ mongoose.connect(mongoUrl,
 } )
 .catch((e) => console.log(e))
 
-require(" ./userModels")
+require("./userDetails")
 
 
-const User = mongoose.model("formsubmit");
+const User = mongoose.model("UserInfo");
 
 app.post("/register", async(req,res) => {
-const {fname,lname,email,password} = req.body
+const {fname, lname, email, password} = req.body
 try {
     await User.create({
         fname,
