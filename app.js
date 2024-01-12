@@ -3,7 +3,7 @@ const app = express()
 const mongoose = require("mongoose")
 app.use(express.json())
 
-const mongoUrl = "mongodb://127.0.0.1:27017/crixianna"
+const mongoUrl = "mongodb://127.0.0.1:27017/secondformsubmit"
 
 mongoose.connect(mongoUrl, 
     {useNewUrlParser: true,} )
@@ -12,6 +12,26 @@ mongoose.connect(mongoUrl,
 } )
 .catch((e) => console.log(e))
 
-app.listen(5000, () => {
+require(" ./userModels")
+
+
+const User = mongoose.model("formsubmit");
+
+app.post("/register", async(req,res) => {
+const {fname,lname,email,password} = req.body
+try {
+    await User.create({
+        fname,
+        lname,
+        email,
+        password,
+    })
+    res.send({status: "ok"})
+} catch (error) {
+    res.send({staus: "error"})
+}
+})
+
+app.listen(7000, () => {
     console.log("server started")
 })
