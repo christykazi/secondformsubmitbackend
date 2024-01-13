@@ -65,3 +65,15 @@ try {
 app.listen(7001, () => {
     console.log("server started")
 })
+
+
+
+
+
+
+
+
+
+
+
+// install express, mongo, mongodb, mongoose, cors, bcrypt, nodemon
