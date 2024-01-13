@@ -7,9 +7,12 @@ app.use(cors())
 const mongoose = require("mongoose")
 app.use(express.json())
 
+const bcrypt = require("bcryptjs")
+
 const mongoUrl = "mongodb://127.0.0.1:27017/secondformsubmit"
 
-mongoose.connect(mongoUrl, {  useUnifiedTopology: true })
+
+mongoose.connect(mongoUrl,)
   .then(() => {
     console.log("connected to database");
   })
@@ -30,20 +33,35 @@ const User = mongoose.model("UserInfo");
 
 app.post("/register", async(req,res) => {
 const {fname, lname, email, password} = req.body
-console.log("Received Data:", fname, lname, email, password);
+
+/* 
+console.log("Received Data:", fname, lname, email, password); */
+
+
+const encryptedpassword = await bcrypt.hash(password, 10)
+
+console.log("Encrypted Password:", encryptedpassword);
 try {
+    const oldUser = await User.findOne({ email })
+
+    if (oldUser){
+     return   res.json({error: "user Exists"})
+    }
     await User.create({
         fname,
         lname,
         email,
-        password,
+        password:  encryptedpassword,
     })
     res.send({status: "ok"})
 } catch (error) {
+
+    // console.error("Error creating user:", error);
+
     res.send({staus: "error"})
 }
 })
 
-app.listen(7000, () => {
+app.listen(7001, () => {
     console.log("server started")
 })
